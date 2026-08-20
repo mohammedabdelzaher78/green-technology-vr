@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
+  <title>التكنولوجيا الخضراء - WebXR Demo</title>
+  <meta name="description" content="تجربة تعليمية WebXR تعمل على Meta Quest 2" />
+  <script src="https://aframe.io/releases/1.7.1/aframe.min.js"></script>
+  <style>
+    html, body { margin: 0; background: #06131d; font-family: Arial, Tahoma, sans-serif; }
+    .hint {
+      position: fixed; z-index: 20; left: 12px; right: 12px; bottom: 12px;
+      background: rgba(3,16,24,.88); color: #fff; border: 1px solid rgba(124,255,167,.45);
+      border-radius: 14px; padding: 10px 14px; text-align: center; direction: rtl;
+      font-size: 14px; line-height: 1.5;
+    }
+    .hint b { color: #8ff0a4; }
+    @media (display-mode: fullscreen) { .hint { display:none; } }
+  </style>
+  <script>
+    AFRAME.registerComponent('lesson-station', {
+      schema: { target: {type: 'string'} },
+      init: function () {
+        const el = this.el;
+        el.addEventListener('mouseenter', () => {
+          el.setAttribute('scale', '1.08 1.08 1.08');
+        });
+        el.addEventListener('mouseleave', () => {
+          el.setAttribute('scale', '1 1 1');
+        });
+        el.addEventListener('click', () => {
+          const panel = document.querySelector('#infoPanel');
+          panel.setAttribute('src', '#' + this.data.target);
+          panel.setAttribute('visible', true);
+
+          const glow = document.querySelector('#panelGlow');
+          glow.setAttribute('animation__pulse', {
+            property: 'material.opacity',
+            from: 0.18, to: 0.55, dur: 350, dir: 'alternate', loop: 2
+          });
+        });
+      }
+    });
+  </script>
+</head>
+<body>
+  <div class="hint">
+    على الكمبيوتر: اسحب بالماوس للنظر واضغط على المحطات. على <b>Meta Quest 2</b> افتح الصفحة من المتصفح ثم اضغط <b>Enter VR</b> واستخدم Trigger للاختيار.
+  </div>
+
+  <a-scene
+    renderer="antialias: true; colorManagement: true"
+    background="color: #06131d"
+    xr-mode-ui="enabled: true"
+    webxr="optionalFeatures: local-floor, bounded-floor"
+  >
+    <a-assets>
+      <img id="titleTex" src="assets/title.svg">
+      <img id="welcomeTex" src="assets/welcome.svg">
+      <img id="solarTex" src="assets/solar.svg">
+      <img id="windTex" src="assets/wind.svg">
+      <img id="recycleTex" src="assets/recycle.svg">
+      <img id="waterTex" src="assets/water.svg">
+      <img id="solarInfo" src="assets/solar_info.svg">
+      <img id="windInfo" src="assets/wind_info.svg">
+      <img id="recycleInfo" src="assets/recycle_info.svg">
+      <img id="waterInfo" src="assets/water_info.svg">
+    </a-assets>
+
+    <!-- Environment -->
+    <a-entity light="type: ambient; intensity: 1.05; color: #d8ffe4"></a-entity>
+    <a-entity light="type: directional; intensity: 1.2; color: #ffffff" position="1 4 2"></a-entity>
+    <a-entity light="type: point; intensity: .75; color: #6cff98; distance: 10" position="0 3 -2"></a-entity>
+
+    <a-plane rotation="-90 0 0" width="18" height="18"
+      material="color:#0b2630; roughness:0.85; metalness:0.05"></a-plane>
+    <a-ring position="0 0.015 -2.5" rotation="-90 0 0" radius-inner="2.2" radius-outer="2.25"
+      material="color:#65e88c; emissive:#39c86a; emissiveIntensity:1"></a-ring>
+    <a-ring position="0 0.02 -2.5" rotation="-90 0 0" radius-inner="3.8" radius-outer="3.83"
+      material="color:#1f6b73; emissive:#1f6b73; emissiveIntensity:.5"></a-ring>
+
+    <!-- Main title -->
+    <a-image src="#titleTex" position="0 3.0 -5.4" width="5.9" height="1.55"></a-image>
+
+    <!-- Central info panel -->
+    <a-plane id="panelGlow" position="0 1.75 -5.22" width="5.5" height="2.05"
+      material="color:#4ee580; opacity:.18; transparent:true; shader:flat"></a-plane>
+    <a-image id="infoPanel" src="#welcomeTex" position="0 1.75 -5.18" width="5.3" height="1.85"></a-image>
+
+    <!-- Solar station -->
+    <a-entity position="-3.5 0 -2.8" class="clickable" lesson-station="target: solarInfo">
+      <a-cylinder radius="1.0" height=".14" position="0 .1 0"
+        material="color:#123e46; metalness:.15"></a-cylinder>
+      <a-box position="0 .85 0" width="1.65" height=".95" depth=".12" rotation="-18 0 0"
+        material="color:#1c5b8f; emissive:#143e67; emissiveIntensity:.4"></a-box>
+      <a-entity position="0 .86 .08">
+        <a-box width=".04" height=".88" depth=".02" material="color:#8dd9ff"></a-box>
+        <a-box width="1.55" height=".04" depth=".02" material="color:#8dd9ff"></a-box>
+        <a-box width=".04" height=".88" depth=".02" position=".52 0 0" material="color:#8dd9ff"></a-box>
+        <a-box width=".04" height=".88" depth=".02" position="-.52 0 0" material="color:#8dd9ff"></a-box>
+      </a-entity>
+      <a-sphere position="-.7 2.0 0" radius=".24" material="color:#ffd65a; emissive:#ffd65a; emissiveIntensity:.85"></a-sphere>
+      <a-image src="#solarTex" position="0 1.75 .05" width="2.25" height=".78"></a-image>
+    </a-entity>
+
+    <!-- Wind station -->
+    <a-entity position="3.5 0 -2.8" class="clickable" lesson-station="target: windInfo">
+      <a-cylinder radius=".95" height=".14" position="0 .1 0" material="color:#123e46"></a-cylinder>
+      <a-cylinder radius=".07" height="2.0" position="0 1.05 0" material="color:#eaf7f1"></a-cylinder>
+      <a-sphere radius=".13" position="0 2.05 0" material="color:#78e996"></a-sphere>
+      <a-box position="0 2.05 0" width="1.35" height=".06" depth=".06"
+             rotation="0 0 8" material="color:#eaf7f1"></a-box>
+      <a-box position="0 2.05 0" width="1.35" height=".06" depth=".06"
+             rotation="0 0 128" material="color:#eaf7f1"></a-box>
+      <a-box position="0 2.05 0" width="1.35" height=".06" depth=".06"
+             rotation="0 0 248" material="color:#eaf7f1"></a-box>
+      <a-image src="#windTex" position="0 2.62 .05" width="2.2" height=".78"></a-image>
+    </a-entity>
+
+    <!-- Recycle station -->
+    <a-entity position="-3.2 0 1.3" class="clickable" lesson-station="target: recycleInfo">
+      <a-cylinder radius=".9" height=".14" position="0 .1 0" material="color:#123e46"></a-cylinder>
+      <a-box position="0 .85 0" width="1.15" height="1.45" depth=".8"
+             material="color:#2d8659; emissive:#1a5939; emissiveIntensity:.25"></a-box>
+      <a-box position="0 1.63 0" width="1.32" height=".12" depth=".94" material="color:#7de99a"></a-box>
+      <a-torus position="0 .9 .43" radius=".28" radius-tubular=".045"
+               material="color:#ffffff; emissive:#ffffff; emissiveIntensity:.15"></a-torus>
+      <a-image src="#recycleTex" position="0 2.22 .05" width="2.2" height=".78"></a-image>
+    </a-entity>
+
+    <!-- Water station -->
+    <a-entity position="3.2 0 1.3" class="clickable" lesson-station="target: waterInfo">
+      <a-cylinder radius=".95" height=".14" position="0 .1 0" material="color:#123e46"></a-cylinder>
+      <a-cylinder radius=".42" height="1.55" position="-.45 .92 0"
+                  material="color:#3186a8; metalness:.25"></a-cylinder>
+      <a-cylinder radius=".42" height="1.55" position=".45 .92 0"
+                  material="color:#27718e; metalness:.25"></a-cylinder>
+      <a-torus radius=".42" radius-tubular=".035" position="-.45 1.18 .02" rotation="90 0 0" material="color:#c9f6ff"></a-torus>
+      <a-torus radius=".42" radius-tubular=".035" position=".45 .7 .02" rotation="90 0 0" material="color:#c9f6ff"></a-torus>
+      <a-sphere position="0 2.05 0" radius=".22" scale=".75 1.2 .75"
+                material="color:#65d9ff; transparent:true; opacity:.85"></a-sphere>
+      <a-image src="#waterTex" position="0 2.56 .05" width="2.2" height=".78"></a-image>
+    </a-entity>
+
+    <!-- Decorative eco city -->
+    <a-entity position="0 0 -7.6">
+      <a-box position="-2.5 1.2 0" width=".7" height="2.4" depth=".7" material="color:#153f48"></a-box>
+      <a-box position="-1.6 1.7 0" width=".8" height="3.4" depth=".8" material="color:#17535b"></a-box>
+      <a-box position="1.7 1.4 0" width=".8" height="2.8" depth=".8" material="color:#184752"></a-box>
+      <a-box position="2.6 1.9 0" width=".65" height="3.8" depth=".65" material="color:#1a5b63"></a-box>
+      <a-sphere position="-2.5 2.55 .35" radius=".2" material="color:#66e889"></a-sphere>
+      <a-sphere position="1.7 2.95 .4" radius=".2" material="color:#66e889"></a-sphere>
+    </a-entity>
+
+    <!-- Camera + Quest controllers -->
+    <a-entity id="rig" position="0 0 3.2">
+      <a-camera position="0 1.6 0" look-controls wasd-controls="acceleration:12">
+        <a-cursor fuse="false" raycaster="objects: .clickable"
+                  material="color:#8ff0a4; shader:flat"
+                  geometry="primitive:ring; radiusInner:.008; radiusOuter:.013"></a-cursor>
+      </a-camera>
+      <a-entity laser-controls="hand: left" raycaster="objects: .clickable; far: 12"></a-entity>
+      <a-entity laser-controls="hand: right" raycaster="objects: .clickable; far: 12"></a-entity>
+    </a-entity>
+  </a-scene>
+</body>
+</html>
