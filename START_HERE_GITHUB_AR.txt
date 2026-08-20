@@ -1,0 +1,32 @@
+تشغيل تجربة التكنولوجيا الخضراء على GitHub Pages
+=================================================
+
+1) أنشئ Repository جديد على GitHub، مثلاً:
+   green-technology-vr
+
+2) ارفع كل محتويات هذا المجلد إلى الـ Repository.
+   مهم: index.html يجب أن يكون في جذر الـ Repository.
+
+3) ادخل:
+   Settings > Pages
+
+4) تحت Build and deployment:
+   اختر Source = GitHub Actions
+
+5) ملف GitHub Actions موجود بالفعل داخل:
+   .github/workflows/deploy-pages.yml
+
+6) بعد رفع الملفات إلى فرع main، سيتم نشر الموقع تلقائيًا.
+
+7) الرابط سيكون غالبًا:
+   https://YOUR-USERNAME.github.io/green-technology-vr/
+
+8) افتح الرابط من Meta Quest Browser واضغط Enter VR.
+
+التحكم:
+- وجّه Controller نحو المحطة.
+- اضغط Trigger.
+- تظهر معلومات المحطة داخل بيئة VR.
+
+ملاحظة:
+التجربة تحتاج اتصال إنترنت لتحميل مكتبة A-Frame.
